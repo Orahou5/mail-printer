@@ -17,5 +17,5 @@ console.log(isUnix);
 
 export function getPrinterApi(){
     if(isWindows) return windowsPrint
-    else if(isUnix) return unixPrint
+    else if(isUnix || isMac) return unixPrint
 }

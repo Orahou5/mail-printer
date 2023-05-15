@@ -1,3 +1,11 @@
 {
-    "filePath" : "C:\\testPrint\\test23.pdf"
+    "filePath" : "./temp"
+    "imap" : {
+        "user": "your_email",
+        "password": "your_password",
+        "host": "imap.gmail.com",
+        "port": 993,
+        "tls": true
+    },
+    "printingKeyword" : "imprime"
 }

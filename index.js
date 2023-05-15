@@ -1,12 +1,6 @@
-import fs from 'fs';
+import { listerBox } from './getMail.js';
 import { getPrinterApi } from './getPrinter.js';
 
-const config = JSON.parse(fs.readFileSync('./config.json'));
+export const printer = getPrinterApi()
 
-const printer = getPrinterApi()
-
-printer.print(config.filePath).then(value => {
-    console.log("sent")
-}).catch(err => {
-    console.log(`error : ${err}`)
-});
+listerBox()

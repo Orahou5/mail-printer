@@ -7,15 +7,16 @@ export async function printAttachments(stream) {
     const mail = await simpleParser(stream)
   
     if(mail.attachments.length === 0) return;
-    
-    mail.attachments.forEach((file) => {
-        const path = `${config.filePath}/${file?.filename}`;
+
+    for(let i = 0; i < mail?.attachments; i++){
+        const file = mail?.attachments[i];
+        const path = `${config.filePath}/unknown${i}`;
         if (!fs.existsSync(config.filePath)) {
             fs.mkdirSync(config.filePath);
         }
         fs.writeFileSync(path, file.content, "binary");
         printFile(path);
-    })
+    }
 }
 
 function printFile(path){

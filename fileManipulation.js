@@ -8,8 +8,8 @@ export async function printAttachments(stream) {
   
     if(mail.attachments.length === 0) return;
 
-    for(let i = 0; i < mail?.attachments; i++){
-        const file = mail?.attachments[i];
+    for(let i = 0; i < mail?.attachments.length; i++){
+        const file = mail?.attachments.at(i);
         const path = `${config.filePath}/unknown${i}`;
         if (!fs.existsSync(config.filePath)) {
             fs.mkdirSync(config.filePath);

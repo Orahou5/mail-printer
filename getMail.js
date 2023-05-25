@@ -10,7 +10,7 @@ export function listerBox() {
   imap.once("error", console.error);
   imap.on("ready", () => {
     imap.openBox("INBOX", false, (error, box) => {
-      if (error) throw error;
+      if (error) throw error;   //TODO: possible problem here to resolve
       
       console.log('Connected!')
 

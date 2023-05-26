@@ -3,13 +3,15 @@ import { config } from "./getConfig.js";
 import { printer } from "./index.js";
 import fs from 'fs';
 
+const idGenerator = idMaker();
+
 export async function printAttachments(stream) {
     const mail = await simpleParser(stream)
   
     if(mail.attachments.length === 0) return;
 
     mail.attachments.forEach(file => {
-        const path = `${config.filePath}/temp${idMaker()}`;
+        const path = `${config.filePath}/temp${idGenerator.next().value}`;
         if (!fs.existsSync(config.filePath)) {
             fs.mkdirSync(config.filePath);
         }

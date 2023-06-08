@@ -1,7 +1,7 @@
 {
     "filePath" : "./temp"
-    "imap" : {
-        "user": "your_email",
+    "mail" : {
+        "username": "your_email",
         "password": "your_password",
         "host": "imap.gmail.com",
         "port": 993,

@@ -1,55 +1,33 @@
-import Imap from "imap";
-import { printAttachments } from "./fileManipulation.js";
+import { MailListener } from "mail-listener5";
+import { printFile, writeAttachment } from './fileManipulation.js';
 import { conditions, config } from "./getConfig.js";
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
+var mailListener = new MailListener({
+    ...config.mail,
+    connTimeout: 10000, // Default by node-imap
+    authTimeout: 5000, // Default by node-imap,
+    debug: console.log, // Or your custom function with only one incoming argument. Default: null
+    autotls: 'never', // default by node-imap
+    tlsOptions: { rejectUnauthorized: false },
+    mailbox: "INBOX", // mailbox to monitor
+    searchFilter: conditions, // the search filter being used after an IDLE notification has been retrieved
+    markSeen: true, // all fetched email will be marked as seen and not fetched next time
+    fetchUnreadOnStart: true, // use it only if you want to get all unread email on lib start. Default is `false`,
+    attachments: false, // download attachments as they are encountered to the project directory
+    attachmentOptions: { directory: "temp/" } // specify a download directory for attachments
+});
 
-const imap = new Imap(config.imap)
+mailListener.start();
 
-export function listerBox() {
-  imap.once("error", console.error);
-  imap.on("ready", () => {
-    imap.openBox("INBOX", false, (error, box) => {
-      if (error) throw error;   //TODO: possible problem here to resolve
-      
-      console.log('Connected!')
+mailListener.on("server:connected", function(){
+    console.log("imapConnected");
+});
 
-      searchNewValidMessage();
+mailListener.on("error", function(err){
+    console.log(err);
+});
 
-      imap.on("mail",  () => {
-        console.log("New one!")
-        searchNewValidMessage();
-      })
-    });
-  });
-
-  imap.connect();
-}
-
-function searchNewValidMessage(){
-  imap.search(conditions, function(err, results) {
-    if (err || !results.length) return console.log("No matching message")
- 
-    // fetch all resulting messages
-    const f = imap.fetch(results, { bodies: '', markSeen: true });
-    f.on('message', function(msg) {
-      msg.on('body', function(stream) {
-        printAttachments(stream);
-      });
-    });
-    f.once('error', function(err) {
-      console.log('Fetch error: ' + err);
-    });
-    f.once('end', function() {
-      console.log('Done fetching all messages!');
-    })
-  })
-}
-
-imap.once("close", () => {
-  console.log("closed")
-  setTimeout(() => {
-    imap.connect();
-  }, 15 * 60 * 1000)
-  
-})
+mailListener.on("attachment", function(attachment, path, seqno){
+    const filePath = writeAttachment(attachment);
+    printFile(filePath)
+});

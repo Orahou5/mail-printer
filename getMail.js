@@ -4,8 +4,8 @@ import { conditions, config } from "./getConfig.js";
 
 var mailListener = new MailListener({
     ...config.mail,
-    connTimeout: 10000, // Default by node-imap
-    authTimeout: 5000, // Default by node-imap,
+    connTimeout: 5000, // Default by node-imap
+    authTimeout: 2500, // Default by node-imap,
     debug: console.log, // Or your custom function with only one incoming argument. Default: null
     autotls: 'never', // default by node-imap
     tlsOptions: { rejectUnauthorized: false },

@@ -27,6 +27,12 @@ mailListener.on("error", function(err){
     console.log(err);
 });
 
+mailListener.on('server:disconnected', () => { 
+    console.log('imapDisconnected');
+    mailListener.stop(); 
+    mailListener.start(); 
+});
+
 mailListener.on("attachment", function(attachment, path, seqno){
     const filePath = writeAttachment(attachment);
     printFile(filePath)

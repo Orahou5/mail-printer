@@ -1,0 +1,11 @@
+{
+    "filePath" : "./temp"
+    "mail" : {
+        "username": "your_email",
+        "password": "your_password",
+        "host": "imap.gmail.com",
+        "port": 993,
+        "tls": true
+    },
+    "printingKeyword" : "imprime"
+}

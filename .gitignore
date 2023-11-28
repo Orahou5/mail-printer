@@ -129,5 +129,8 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# config file
+# config.json
 config.json
+
+# temporary files
+temp/
